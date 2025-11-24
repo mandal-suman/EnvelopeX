@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnvelopeX v1.0.0 - Professional Email Forensics Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <span class="logo-text">EnvelopeX</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#analysis" class="nav-item active" data-section="analysis" title="New Analysis">
+                <i class="fas fa-search"></i>
+                <span>New Analysis</span>
+            </a>
+            <a href="#history" class="nav-item" data-section="history" title="Analysis History">
+                <i class="fas fa-history"></i>
+                <span>Analysis History</span>
+            </a>
+            <a href="#documentation" class="nav-item" data-section="documentation" title="Documentation">
+                <i class="fas fa-book"></i>
+                <span>Documentation</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="settings-container">
+                <button class="sidebar-settings-btn" id="settingsBtn" title="Settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+                <div class="settings-dropdown" id="settingsDropdown">
+                    <div class="settings-dropdown-header">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                    <div class="settings-dropdown-body">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <label class="setting-label">
+                                    <i class="fas fa-info-circle"></i> About
+                                </label>
+                                <span class="setting-description">EnvelopeX v1.0.0 - Email Forensics Platform</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Toggle Sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item active" id="currentSection">New Analysis</span>
+                </div>
+            </div>
+            
+            <div class="topbar-center">
+            </div>
+
+            <div class="topbar-right">
+            </div>
+        </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="content-section" style="display: none;">
+            <div class="section-header">
+                <h1 class="page-title">Dashboard Overview</h1>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="refreshStats">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-primary" id="newAnalysisBtn">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalAnalysisCount">0</div>
+                        <div class="stat-label">Total Analyses</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> 12% this week
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="safeEmailsCount">0</div>
+                        <div class="stat-label">Safe Emails</div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i> 8% increase
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-danger">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="threatsDetected">0</div>
+                        <div class="stat-label">Threats Detected</div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-arrow-down"></i> 5% decrease
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="avgAnalysisTime">0s</div>
+                        <div class="stat-label">Avg. Analysis Time</div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-minus"></i> No change
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Analysis Timeline</h3>
+                        <div class="card-actions">
+                            <select class="chart-filter" id="timelineFilter">
+                                <option value="7">Last 7 Days</option>
+                                <option value="30">Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="analysisChart" height="250"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i>
+                        <h3>Threat Distribution</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="threatChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-history"></i>
+                    <h3>Recent Analysis Activity</h3>
+                    <button class="btn-link" id="viewAllHistory">View All →</button>
+                </div>
+                <div class="card-body">
+                    <div class="activity-list" id="recentActivity">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No recent activity</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Section -->
+        <section id="analysis-section" class="content-section active">
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <div class="upload-card glass-effect">
+                    <div class="upload-header">
+                        <i class="fas fa-file-upload"></i>
+                        <h2>Upload Email for Analysis</h2>
+                        <span class="version-badge">v1.0.0</span>
+                    </div>
+                    <div class="upload-body">
+                        <form id="analyzeForm" enctype="multipart/form-data">
+                            <div class="file-input-wrapper">
+                                <input type="file" id="emailFile" name="email_file" accept=".eml,.msg,.mbox,.txt,.emlx" required>
+                                <label for="emailFile" class="file-input-label" id="dropZone">
+                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                    <span class="file-input-text">
+                                        <strong>Click to upload</strong> or drag and drop
+                                    </span>
+                                    <span class="file-input-formats">Supported: EML, MSG, MBOX, TXT (Max 25MB)</span>
+                                    <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="progressFill"></div>
+                                        </div>
+                                        <span class="progress-text" id="progressText">0%</span>
+                                    </div>
+                                </label>
+                                <div class="selected-file" id="selectedFile" style="display: none;">
+                                    <i class="fas fa-file-alt"></i>
+                                    <div class="file-details">
+                                        <span id="fileName"></span>
+                                        <span id="fileSize" class="file-size"></span>
+                                    </div>
+                                    <button type="button" class="remove-file" id="removeFile">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="file-error" id="fileError" style="display: none;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span id="fileErrorMessage"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-large" id="analyzeBtn" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                <i class="fas fa-search"></i>
+                                <span>Start Forensic Analysis</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-primary">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3>Multi-Format Support</h3>
+                        <p>EML, MSG, MBOX, TXT parsing</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-success">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>SPF/DKIM/DMARC</h3>
+                        <p>Authentication validation</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-info">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3>MIME Structure</h3>
+                        <p>Complete structure visualization</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-dark">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Header Intelligence</h3>
+                        <p>50+ RFC 5322 header types</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-primary">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>IP & rDNS Lookup</h3>
+                        <p>Originating IP detection</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-info">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3>Transmission Path</h3>
+                        <p>Hop-by-hop routing analysis</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-success">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <h3>URL Extraction</h3>
+                        <p>Links with risk assessment</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-primary">
+                            <i class="fas fa-paperclip"></i>
+                        </div>
+                        <h3>Attachment Analysis</h3>
+                        <p>MD5, SHA1, SHA256 hashing</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-dark">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <h3>Tracking Pixels</h3>
+                        <p>Hidden beacon detection</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-success">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Anomaly Detection</h3>
+                        <p>15+ suspicious patterns</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-info">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Body Contents</h3>
+                        <p>Plain text, HTML, preview</p>
+                        <div class="feature-badge">Available</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon gradient-danger">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI-Based Anomaly Detection</h3>
+                        <p>Advanced ML pattern analysis</p>
+                        <div class="feature-badge coming-soon">Coming Soon</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history-section" class="content-section">
+            <div class="section-header">
+                <h1 class="page-title">Analysis History</h1>
+                <div class="history-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search by filename, date, or result..." id="historySearch">
+                    </div>
+                    <div class="filter-group">
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="safe">Safe</option>
+                            <option value="suspicious">Suspicious</option>
+                            <option value="malicious">Malicious</option>
+                        </select>
+                        <select class="filter-select" id="dateFilter">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" id="clearHistory">
+                        <i class="fas fa-trash"></i> Clear History
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="history-table-wrapper">
+                        <table class="history-table" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAll"></th>
+                                    <th>Timestamp</th>
+                                    <th>Filename</th>
+                                    <th>From</th>
+                                    <th>Subject</th>
+                                    <th>Status</th>
+                                    <th>Anomalies</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <tr class="empty-row">
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <i class="fas fa-history"></i>
+                                            <p>No analysis history available</p>
+                                            <button class="btn btn-primary" onclick="document.querySelector('[data-section=analysis]').click()">
+                                                Start Your First Analysis
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="statistics-section" class="content-section">
+            <div class="section-header">
+                <h1 class="page-title">Advanced Statistics</h1>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Authentication Success Rate</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="authSuccessChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area"></i>
+                        <h3>File Format Distribution</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="formatChart" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Analysis Volume</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="volumeChart" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-database"></i>
+                    <h3>Detailed Statistics</h3>
+                </div>
+                <div class="card-body">
+                    <div class="stats-details">
+                        <div class="stat-row">
+                            <span class="stat-label">Total Emails Analyzed:</span>
+                            <span class="stat-value" id="statTotalEmails">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">SPF Pass Rate:</span>
+                            <span class="stat-value" id="statSPFRate">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">DKIM Pass Rate:</span>
+                            <span class="stat-value" id="statDKIMRate">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">DMARC Pass Rate:</span>
+                            <span class="stat-value" id="statDMARCRate">0%</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Average Attachments per Email:</span>
+                            <span class="stat-value" id="statAvgAttachments">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Total Anomalies Detected:</span>
+                            <span class="stat-value" id="statAnomalies">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section id="documentation-section" class="content-section">
+            <div class="section-header">
+                <h1 class="page-title">Documentation</h1>
+            </div>
+
+            <!-- Documentation Tabs -->
+            <div class="tabs-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="user-guide">
+                        <i class="fas fa-book-open"></i> User Guide
+                    </button>
+                    <button class="tab-btn" data-tab="api-docs">
+                        <i class="fas fa-code"></i> API Documentation
+                    </button>
+                    <button class="tab-btn" data-tab="best-practices">
+                        <i class="fas fa-lightbulb"></i> Best Practices
+                    </button>
+                    <button class="tab-btn" data-tab="faq">
+                        <i class="fas fa-question-circle"></i> FAQ
+                    </button>
+                </div>
+
+                <div class="tabs-content">
+                    <!-- User Guide Tab -->
+                    <div class="tab-pane active" id="user-guide">
+                        <div class="doc-content">
+                            <h2>User Guide</h2>
+                            <p class="doc-description">Comprehensive guide for using the EnvelopeX email forensics platform</p>
+                            
+                            <div class="doc-section">
+                                <h3>Getting Started</h3>
+                                <p>EnvelopeX is a professional email forensics platform designed to analyze and detect potential phishing attempts and email-based threats.</p>
+                                <ul>
+                                    <li>Upload email files in EML, MSG, or MBOX format</li>
+                                    <li>Maximum file size: 25MB</li>
+                                    <li>Drag and drop support for easy file upload</li>
+                                </ul>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Understanding Results</h3>
+                                <p>Analysis results include:</p>
+                                <ul>
+                                    <li><strong>Authentication Checks:</strong> SPF, DKIM, and DMARC validation</li>
+                                    <li><strong>Headers Analysis:</strong> Complete email header inspection</li>
+                                    <li><strong>Anomaly Detection:</strong> Suspicious patterns identification</li>
+                                    <li><strong>Body Content:</strong> Plain text, HTML source, and safe preview</li>
+                                    <li><strong>Security Analysis:</strong> URLs, IPs, and encryption details</li>
+                                </ul>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Export Options</h3>
+                                <p>Export your analysis results in multiple formats:</p>
+                                <ul>
+                                    <li>JSON - Machine-readable format for integration</li>
+                                    <li>Text - Human-readable plain text format</li>
+                                    <li>PDF - Professional report (Coming Soon)</li>
+                                    <li>CSV - Spreadsheet compatible (Coming Soon)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Documentation Tab -->
+                    <div class="tab-pane" id="api-docs">
+                        <div class="doc-content">
+                            <h2>API Documentation</h2>
+                            <p class="doc-description">REST API reference for integrating EnvelopeX into your systems</p>
+                            
+                            <div class="doc-section">
+                                <h3>Analyze Email Endpoint</h3>
+                                <div class="code-block">
+                                    <code>POST /api/analyze</code>
+                                </div>
+                                <p>Upload and analyze an email file</p>
+                                <h4>Request:</h4>
+                                <div class="code-block">
+                                    <pre>Content-Type: multipart/form-data
+email_file: [file]</pre>
+                                </div>
+                                <h4>Response:</h4>
+                                <div class="code-block">
+                                    <pre>{
+  "success": true,
+  "data": {
+    "from": "sender@example.com",
+    "subject": "Email subject",
+    "authentication": {...},
+    "anomalies": [...],
+    "headers": {...}
+  }
+}</pre>
+                                </div>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Supported Formats</h3>
+                                <ul>
+                                    <li>EML (Email Message Format)</li>
+                                    <li>MSG (Outlook Message Format)</li>
+                                    <li>MBOX (Unix Mailbox Format)</li>
+                                    <li>TXT (Plain Text Email)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Best Practices Tab -->
+                    <div class="tab-pane" id="best-practices">
+                        <div class="doc-content">
+                            <h2>Best Practices</h2>
+                            <p class="doc-description">Industry best practices for email security analysis and threat detection</p>
+                            
+                            <div class="doc-section">
+                                <h3>Email Security Fundamentals</h3>
+                                <ul>
+                                    <li>Always verify sender authentication (SPF, DKIM, DMARC)</li>
+                                    <li>Check for suspicious links and attachments</li>
+                                    <li>Analyze email headers for routing anomalies</li>
+                                    <li>Look for urgency tactics and social engineering</li>
+                                </ul>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Threat Indicators</h3>
+                                <ul>
+                                    <li>Mismatched sender addresses</li>
+                                    <li>Failed authentication checks</li>
+                                    <li>Suspicious attachments or links</li>
+                                    <li>Unusual routing patterns</li>
+                                    <li>Grammar and spelling errors</li>
+                                </ul>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Response Procedures</h3>
+                                <ul>
+                                    <li>Document and report suspicious emails</li>
+                                    <li>Quarantine potential threats</li>
+                                    <li>Notify affected users and IT security</li>
+                                    <li>Update security policies based on findings</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Tab -->
+                    <div class="tab-pane" id="faq">
+                        <div class="doc-content">
+                            <h2>Frequently Asked Questions</h2>
+                            <p class="doc-description">Common questions and troubleshooting tips</p>
+                            
+                            <div class="doc-section">
+                                <h3>What file formats are supported?</h3>
+                                <p>EnvelopeX supports EML, MSG, MBOX, and TXT email file formats with a maximum size of 25MB.</p>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>How does anomaly detection work?</h3>
+                                <p>Anomaly detection analyzes multiple email attributes including authentication failures, header inconsistencies, suspicious patterns, and malformed content. Each detected anomaly is listed in the results for your review.</p>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>What do SPF, DKIM, and DMARC mean?</h3>
+                                <p>These are email authentication protocols:</p>
+                                <ul>
+                                    <li><strong>SPF:</strong> Sender Policy Framework - verifies sending server</li>
+                                    <li><strong>DKIM:</strong> DomainKeys Identified Mail - validates message integrity</li>
+                                    <li><strong>DMARC:</strong> Domain-based Message Authentication - enforces authentication policies</li>
+                                </ul>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Is my data stored?</h3>
+                                <p>Analysis history is stored locally in your browser using localStorage. No email content is stored on our servers beyond the active analysis session.</p>
+                            </div>
+
+                            <div class="doc-section">
+                                <h3>Can I integrate this into my application?</h3>
+                                <p>Yes! EnvelopeX provides a REST API for integration. Check the API Documentation tab for details.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section (Analysis Results) -->
+        <section id="results-section" class="content-section">
+            <!-- Loading Section -->
+            <div id="loadingSection" class="loading-section" style="display: none;">
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Analyzing email forensics...</p>
+                    <div class="loading-steps">
+                        <div class="loading-step active" id="step1">
+                            <i class="fas fa-check-circle"></i> Parsing email structure
+                        </div>
+                        <div class="loading-step" id="step2">
+                            <i class="fas fa-spinner fa-spin"></i> Validating authentication
+                        </div>
+                        <div class="loading-step" id="step3">
+                            <i class="fas fa-spinner fa-spin"></i> Analyzing security
+                        </div>
+                        <div class="loading-step" id="step4">
+                            <i class="fas fa-spinner fa-spin"></i> Generating report
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Content -->
+            <div id="resultsContent" style="display: none;">
+                <!-- Analysis Overview -->
+                <div class="results-header">
+                    <div class="results-title-section">
+                        <h2 class="section-title">Analysis Results</h2>
+                        <div class="analysis-meta" id="analysisMeta"></div>
+                    </div>
+                    <div class="results-actions">
+                        <div class="export-dropdown-container">
+                            <button class="btn btn-secondary" id="exportDropdownBtn">
+                                <i class="fas fa-download"></i> Export <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="export-dropdown-menu" id="exportDropdownMenu">
+                                <button class="export-dropdown-item" id="downloadJSON">
+                                    <i class="fas fa-file-code"></i> 
+                                    <span>JSON</span>
+                                </button>
+                                <button class="export-dropdown-item disabled" id="downloadCSV">
+                                    <i class="fas fa-file-csv"></i> 
+                                    <span>CSV</span>
+                                    <span class="coming-soon-tag">Coming Soon</span>
+                                </button>
+                                <button class="export-dropdown-item disabled" id="downloadPDF">
+                                    <i class="fas fa-file-pdf"></i> 
+                                    <span>PDF</span>
+                                    <span class="coming-soon-tag">Coming Soon</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="newAnalysisFromResults">
+                            <i class="fas fa-plus"></i> New Analysis
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button class="tab-button active" data-tab="details">
+                            <i class="fas fa-info-circle"></i> Details
+                        </button>
+                        <button class="tab-button" data-tab="authentication">
+                            <i class="fas fa-shield-check"></i> Authentication
+                        </button>
+                        <button class="tab-button" data-tab="urls">
+                            <i class="fas fa-link"></i> URLs
+                        </button>
+                        <button class="tab-button" data-tab="attachments">
+                            <i class="fas fa-paperclip"></i> Attachments
+                        </button>
+                        <button class="tab-button" data-tab="transmission">
+                            <i class="fas fa-exchange-alt"></i> Transmission
+                        </button>
+                        <button class="tab-button" data-tab="xheaders">
+                            <i class="fas fa-th-list"></i> X-Headers
+                        </button>
+                        <button class="tab-button" data-tab="mime">
+                            <i class="fas fa-sitemap"></i> MIME Structure
+                        </button>
+                        <button class="tab-button" data-tab="body">
+                            <i class="fas fa-file-alt"></i> Body Contents
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Details Tab -->
+                    <div id="details-tab" class="tab-pane active">
+                        <div class="details-list" id="detailsList"></div>
+                    </div>
+
+                    <!-- Authentication Tab -->
+                    <div id="authentication-tab" class="tab-pane">
+                        <div id="authenticationContent"></div>
+                    </div>
+
+                    <!-- URLs Tab -->
+                    <div id="urls-tab" class="tab-pane">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-link"></i>
+                                <h3>Extracted URLs</h3>
+                            </div>
+                            <div class="card-body" id="urlsContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Attachments Tab -->
+                    <div id="attachments-tab" class="tab-pane">
+                        <div id="attachmentsContent"></div>
+                    </div>
+
+                    <!-- Transmission Tab -->
+                    <div id="transmission-tab" class="tab-pane">
+                        <div id="transmissionContent"></div>
+                    </div>
+
+                    <!-- X-Headers Tab -->
+                    <div id="xheaders-tab" class="tab-pane">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-th-list"></i>
+                                <h3>X-Headers</h3>
+                                <div class="header-actions">
+                                    <div class="search-box-small">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" placeholder="Search X-headers..." id="xheaderSearch">
+                                    </div>
+                                    <button class="btn-icon" id="copyXHeaders" title="Copy X-Headers">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body" id="xheadersContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- MIME Structure Tab -->
+                    <div id="mime-tab" class="tab-pane">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-sitemap"></i>
+                                <h3>MIME Structure Visualization</h3>
+                            </div>
+                            <div class="card-body" id="mimeStructureContent"></div>
+                        </div>
+                    </div>
+
+                    <!-- Body Contents Tab -->
+                    <div id="body-tab" class="tab-pane">
+                        <div class="body-tabs">
+                            <button class="body-tab-btn active" data-body-tab="plain">
+                                <i class="fas fa-file-alt"></i> Plain Text
+                            </button>
+                            <button class="body-tab-btn" data-body-tab="html">
+                                <i class="fas fa-code"></i> HTML Source
+                            </button>
+                            <button class="body-tab-btn" data-body-tab="preview">
+                                <i class="fas fa-eye"></i> HTML Preview
+                            </button>
+                        </div>
+                        
+                        <!-- Plain Text View -->
+                        <div class="card" id="plainBodyCard" style="display: block;">
+                            <div class="card-header">
+                                <i class="fas fa-file-alt"></i>
+                                <h3>Plain Text Body</h3>
+                                <button class="btn-icon" id="copyPlainBody" title="Copy Plain Text">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <pre class="body-content" id="plainBodyContent"></pre>
+                            </div>
+                        </div>
+                        
+                        <!-- HTML Source View -->
+                        <div class="card" id="htmlBodyCard" style="display: none;">
+                            <div class="card-header">
+                                <i class="fas fa-code"></i>
+                                <h3>HTML Source Code</h3>
+                                <button class="btn-icon" id="copyHtmlBody" title="Copy HTML Source">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <pre class="body-content code-block" id="htmlBodyContent"></pre>
+                            </div>
+                        </div>
+                        
+                        <!-- HTML Preview (Safe Iframe) -->
+                        <div class="card" id="previewBodyCard" style="display: none;">
+                            <div class="card-header">
+                                <i class="fas fa-eye"></i>
+                                <h3>HTML Preview</h3>
+                                <div class="preview-controls">
+                                    <span id="externalScriptsStatus" class="status-badge status-disabled" title="External scripts are blocked">
+                                        <i class="fas fa-shield-alt"></i> Scripts Blocked
+                                    </span>
+                                    <button class="btn-icon btn-toggle" id="toggleExternalScripts" title="Toggle external scripts">
+                                        <i class="fas fa-power-off"></i>
+                                    </button>
+                                    <button class="btn-icon" id="refreshPreview" title="Refresh Preview">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="iframe-container">
+                                    <iframe 
+                                        id="emailPreviewFrame" 
+                                        sandbox="allow-same-origin"
+                                        title="Email HTML Preview"
+                                        class="email-preview-iframe"
+                                    ></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div id="errorSection" class="error-section" style="display: none;">
+                <div class="error-card">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>Analysis Failed</h3>
+                    <p id="errorMessage"></p>
+                    <div class="error-actions">
+                        <button class="btn btn-secondary" onclick="location.reload()">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                        <button class="btn btn-primary" onclick="document.querySelector('[data-section=analysis]').click()">
+                            <i class="fas fa-arrow-left"></i> Back to Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal for Export Options -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Analysis Results</h3>
+                <button class="modal-close" id="closeExportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <button class="export-option" data-format="json">
+                        <i class="fas fa-file-code"></i>
+                        <span>JSON Format</span>
+                        <small>Machine-readable data</small>
+                    </button>
+                    <button class="export-option" data-format="csv" disabled>
+                        <i class="fas fa-file-csv"></i>
+                        <span>CSV Format <span class="coming-soon-badge">Coming Soon</span></span>
+                        <small>Spreadsheet compatible</small>
+                    </button>
+                    <button class="export-option" data-format="pdf" disabled>
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF Report <span class="coming-soon-badge">Coming Soon</span></span>
+                        <small>Professional document</small>
+                    </button>
+                    <button class="export-option" data-format="text">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Text Format</span>
+                        <small>Plain text output</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>&copy; 2025 <strong>EnvelopeX v1.0.0</strong></p>
+            </div>
+            <div class="footer-center">
+                <a href="#">Privacy Policy</a>
+                <span>•</span>
+                <a href="#">Terms of Service</a>
+                <span>•</span>
+                <a href="#">API Documentation</a>
+                <span>•</span>
+                <a href="https://github.com/mandal-suman/EnvelopeX" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+            <div class="footer-right">
+                <span class="footer-status">
+                    <i class="fas fa-circle status-online"></i> All Systems Operational
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/results-renderer-new.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+<style>
+.error-page {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #f6f9fc 0%, #eef3fb 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #0f172a;
+}
+
+.error-content {
+    text-align: center;
+    background: #ffffff;
+    padding: 36px;
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.03);
+}
+
+.error-icon {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    font-size: 40px;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.12);
+}
+
+h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    line-height: 1.1;
+    color: #0b1220;
+}
+
+p {
+    margin: 0 0 20px;
+    color: #475569;
+    font-size: 15px;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #0ea5a4;
+    color: #ffffff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    box-shadow: 0 8px 20px rgba(14, 165, 164, 0.12);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(14, 165, 164, 0.14);
+    outline: none;
+}
+
+.btn-primary i {
+    font-size: 14px;
+}
+
+@media (max-width: 420px) {
+    .error-content { padding: 28px; }
+    .error-icon { width: 76px; height: 76px; font-size: 34px; margin-bottom: 14px; }
+    h2 { font-size: 22px; }
+}
+</style>
+
+<div class="error-page" role="main">
+    <div class="error-content" role="region" aria-labelledby="error-title">
+        <div class="error-icon" role="img" aria-label="Server error">
+            <i class="fas fa-server" aria-hidden="true"></i>
+        </div>
+
+        <h2 id="error-title">500 — Server Error</h2>
+        <p>Sorry — something went wrong on our side. Please try again in a few moments.</p>
+
+        <a href="/" class="btn-primary" title="Go to homepage">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            Go Home
+        </a>
+    </div>
+</div>
+{% endblock %}
