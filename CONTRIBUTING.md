@@ -92,19 +92,42 @@ When suggesting a feature:
 ```
 EnvelopeX/
 ├── backend/                 # Python FastAPI Backend
-│   ├── app.py              # Main FastAPI application
-│   ├── extractor.py        # Email forensics analyzer
-│   └── requirements.txt    # Python dependencies
-├── frontend/               # React Frontend
+│   ├── app.py              # Main FastAPI application (335 lines)
+│   ├── extractor.py        # Email forensics analyzer (543 lines)
+│   ├── requirements.txt    # Python dependencies
+│   └── .venv/             # Virtual environment
+├── frontend/               # React Frontend Dashboard
+│   ├── public/
+│   │   ├── EnvelopeX.svg           # Static logo
+│   │   ├── EnvelopeX-loading.svg   # Loading animation
+│   │   └── EnvelopeX-inprogress.svg # Analysis indicator
 │   ├── src/
-│   │   ├── pages/         # Main application pages
 │   │   ├── components/    # Reusable components
-│   │   ├── services/      # API and storage services
-│   │   └── context/       # React context for state
-│   └── package.json       # Node.js dependencies
+│   │   │   ├── Navbar.js      # Top navigation bar
+│   │   │   ├── Sidebar.js     # Side navigation menu
+│   │   │   └── Footer.js      # Footer component
+│   │   ├── pages/         # Application pages
+│   │   │   ├── Dashboard.js       # File upload & analysis
+│   │   │   ├── AnalysisResults.js # Results viewer (tabs)
+│   │   │   ├── History.js         # Analysis history
+│   │   │   ├── SettingsPage.js    # Configuration
+│   │   │   └── About.js           # Platform info
+│   │   ├── services/      # API and storage
+│   │   │   ├── api.js         # Backend API client (axios)
+│   │   │   └── storage.js     # localStorage wrapper
+│   │   ├── context/       # State management
+│   │   │   └── AnalysisContext.js # Global state
+│   │   ├── scss/          # Styles
+│   │   ├── App.js         # Root component
+│   │   ├── index.js       # Entry point
+│   │   └── routes.js      # Route definitions
+│   ├── package.json       # Node.js dependencies
+│   └── .gitignore
+├── .gitignore
 ├── CHANGELOG.md           # Version history
-├── CONTRIBUTING.md        # This file
-└── README.md             # Project documentation
+├── CONTRIBUTING.md        # Contribution guidelines
+├── LICENSE                # MIT License
+└── README.md             # This file
 ```
 
 ## 📝 Coding Standards
