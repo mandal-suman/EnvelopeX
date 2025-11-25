@@ -1,6 +1,6 @@
 # EnvelopeX - Email Forensics Analysis Platform
 
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/mandal-suman/envelopex)
+[![Version](https://img.shields.io/badge/version-2.0.0--beta-blue.svg)](https://github.com/mandal-suman/envelopex)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![React](https://img.shields.io/badge/react-16.13.1-blue.svg)](https://reactjs.org/)
