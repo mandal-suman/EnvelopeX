@@ -72,11 +72,6 @@ EnvelopeX/
     └── js/results-renderer-new.js
 ```
 
-## 🔧 Technical Stack
-
-**Backend**: Flask 3.0.0, dkimpy, dnspython, BeautifulSoup4
-**Frontend**: Vanilla JavaScript, Chart.js, Font Awesome
-**Key Libraries**: chardet, python-dateutil, Flask-CORS
 
 ## 🔒 Security
 
