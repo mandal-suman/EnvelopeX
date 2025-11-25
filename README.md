@@ -409,7 +409,6 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 For questions, issues, or feedback:
 - GitHub Issues: [Report a bug or request a feature](https://github.com/mandal-suman/envelopex/issues)
-- Email: [Your contact email]
 
 ## 🙏 Acknowledgments
 
@@ -422,4 +421,4 @@ For questions, issues, or feedback:
 
 **Built with ❤️ for security professionals and investigators**
 
-**EnvelopeX v2.0.0** - Making email forensics accessible and powerful.
+**EnvelopeX v2.0.0** - Making email forensics awesome and powerful.
