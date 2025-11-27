@@ -35,8 +35,8 @@ A comprehensive email forensics and security analysis platform built with Python
 ```
 EnvelopeX/
 ├── backend/                 # Python FastAPI Backend
-│   ├── app.py              # Main FastAPI application (335 lines)
-│   ├── extractor.py        # Email forensics analyzer (543 lines)
+│   ├── app.py              # Main FastAPI application (349 lines)
+│   ├── extractor.py        # Email forensics analyzer (542 lines)
 │   ├── requirements.txt    # Python dependencies
 │   └── .venv/             # Virtual environment
 ├── frontend/               # React Frontend Dashboard
